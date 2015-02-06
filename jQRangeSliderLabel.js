@@ -355,26 +355,26 @@
 				this.ConstraintPositions(label2Pos, label1Pos);
 			}
 
-			this.PositionLabel(this.label1, label1Pos.left, this.cache.label1);
-			this.PositionLabel(this.label2, label2Pos.left, this.cache.label2);
+			this.PositionLabel(this.label1, label1Pos.left, this.cache.label1, document.getElementById("pickerStart"));
+			this.PositionLabel(this.label2, label2Pos.left, this.cache.label2, document.getElementById("pickerEnd"));
 		}
 
-		this.PositionLabel = function(label, leftOffset, cache){
+		this.PositionLabel = function(label, leftOffset, cache, picker){
 			var parentShift = this.cache.offsetParent.offset.left + this.cache.offsetParent.border.left,
-					parentRightPosition,
-					labelRightPosition,
-					rightPosition;
+					parentRightPosition = parentShift + this.cache.offsetParent.width,
+			        labelRightPosition = leftOffset + cache.margin.left + cache.outerWidth + cache.margin.right,
+			        rightPosition = parentRightPosition - labelRightPosition;
 
 			if ((parentShift - leftOffset) >= 0){
 				label.css("right", "");
 				label.offset({left: leftOffset});
 			}else{
-				parentRightPosition = parentShift + this.cache.offsetParent.width;
-				labelRightPosition = leftOffset + cache.margin.left + cache.outerWidth + cache.margin.right;
-				rightPosition = parentRightPosition - labelRightPosition;
-
 				label.css("left", "");
 				label.css("right", rightPosition);
+			}
+
+			if (picker) { 
+			    picker.style.right = (rightPosition - $(picker).width()) + 'px'; 
 			}
 		}
 
